@@ -1,0 +1,159 @@
+/* Everything we add to stock shadcn: the theme hooks and house rules it lacks, keyed on its data-slot names. Roles come from the theme engine. */
+
+/* Registered so a theme's 0ms and 0s both match the None query below. */
+@property --default-transition-duration {
+  syntax: "<time>";
+  inherits: true;
+  initial-value: 150ms;
+}
+
+@layer base {
+  /* Headings, paragraphs and the kit's titles and descriptions break lines without orphans. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  [data-slot$="-title"],
+  [data-slot$="-description"] {
+    text-wrap: pretty;
+  }
+  /* Digits line up in tables and number fields. */
+  [data-slot="table"],
+  input[type="number"],
+  [inputmode="numeric"],
+  [inputmode="decimal"] {
+    font-variant-numeric: tabular-nums;
+  }
+  /* Native checkboxes, radios and ranges, the caret and selected text take the primary, as the kit's own controls do. */
+  :root {
+    accent-color: var(--primary);
+    caret-color: var(--primary);
+  }
+  ::selection {
+    background-color: color-mix(in oklab, var(--primary) 25%, transparent);
+  }
+  /* A link with no classes takes shadcn's link style in the theme's link colour, the primary at a lightness that reads on the page. */
+  a:not([class]) {
+    color: var(--link);
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+@layer components {
+  /* Fields get the engine's fill (ink 6% at border width 0) as an image layer, so a bg-* class still sets their colour. */
+  :is(
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="select-trigger"],
+    [data-slot="native-select"],
+    [data-slot="input-group"],
+    [data-slot="input-otp-slot"]
+  ) {
+    background-image: linear-gradient(var(--input-fill), var(--input-fill));
+  }
+}
+
+/* Floating parts animate at the theme's duration and easing; unlayered, so the theme beats stock's duration-* and ease-* classes. */
+:is(
+  [data-slot="popover-content"],
+  [data-slot="hover-card-content"],
+  [data-slot="tooltip-content"],
+  [data-slot="select-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="context-menu-content"],
+  [data-slot="context-menu-sub-content"],
+  [data-slot="menubar-content"],
+  [data-slot="menubar-sub-content"]
+) {
+  --tw-animation-duration: var(--default-transition-duration);
+  --tw-ease: var(--default-transition-timing-function);
+}
+
+/* Dialogs, sheets and disclosure panels cover more ground, so they take the long duration (1.6×). */
+:is(
+  [data-slot="dialog-overlay"],
+  [data-slot="dialog-content"],
+  [data-slot="alert-dialog-overlay"],
+  [data-slot="alert-dialog-content"],
+  [data-slot="sheet-overlay"],
+  [data-slot="sheet-content"],
+  [data-slot="accordion-content"],
+  [data-slot="collapsible-content"]
+) {
+  --tw-animation-duration: var(--default-transition-duration-long);
+  --tw-ease: var(--default-transition-timing-function);
+}
+
+/* The accordion's chevron turns with its panel; stock pins it to 200ms. */
+[data-slot="accordion-trigger"] > svg {
+  transition-duration: var(--default-transition-duration-long);
+}
+
+/* Buttons press down a pixel, at the theme's duration and easing through stock's transition-all. */
+[data-slot="button"]:active:not(:disabled) {
+  translate: 0 1px;
+}
+
+/* Vaul and Sonner animate with their own CSS; these selectors outrank theirs by one attribute. */
+[data-slot="drawer-content"][data-vaul-drawer],
+.toaster [data-sonner-toast] {
+  animation-duration: var(--default-transition-duration-long);
+  animation-timing-function: var(--default-transition-timing-function);
+  transition-duration: var(--default-transition-duration-long);
+  transition-timing-function: var(--default-transition-timing-function);
+}
+
+/* Reduced motion is the None preset; doubled to outrank the theme's own :root. */
+@media (prefers-reduced-motion: reduce) {
+  :root:root {
+    --default-transition-duration: 0s;
+  }
+}
+
+/* None means calm: every stock part that animates on data-state fades for 150ms and stops moving; buttons don't press and the chevron doesn't turn. */
+@container style(--default-transition-duration: 0s) {
+  [data-slot][data-state] {
+    --tw-animation-duration: 150ms;
+    --tw-enter-opacity: 0;
+    --tw-exit-opacity: 0;
+    --tw-enter-scale: 1;
+    --tw-exit-scale: 1;
+    --tw-enter-translate-x: 0;
+    --tw-enter-translate-y: 0;
+    --tw-exit-translate-x: 0;
+    --tw-exit-translate-y: 0;
+  }
+  [data-slot="button"]:active:not(:disabled) {
+    translate: none;
+  }
+  [data-slot="accordion-trigger"] > svg {
+    transition-duration: 0s;
+  }
+}
+
+/* Sonner's rich success, warning and error toasts in the theme's status colours; tints mix in oklab, which keeps the hue. */
+.toaster[data-sonner-toaster][data-theme] {
+  --success-text: var(--color-success);
+  --success-bg: color-mix(in oklab, var(--color-success) 10%, var(--popover));
+  --success-border: color-mix(
+    in oklab,
+    var(--color-success) 30%,
+    var(--popover)
+  );
+  --warning-text: var(--color-warning);
+  --warning-bg: color-mix(in oklab, var(--color-warning) 10%, var(--popover));
+  --warning-border: color-mix(
+    in oklab,
+    var(--color-warning) 30%,
+    var(--popover)
+  );
+  --error-text: var(--color-error);
+  --error-bg: color-mix(in oklab, var(--color-error) 10%, var(--popover));
+  --error-border: color-mix(in oklab, var(--color-error) 30%, var(--popover));
+}

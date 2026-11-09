@@ -1,0 +1,171 @@
+/* El Patrón · estilos globales (Tailwind CSS v4 + shadcn/ui)
+   Cambia los colores de la marca en el bloque @theme y los roles de shadcn en :root. */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./styles/shadcn-tailwind.css";
+@import "./styles/shadcn-overlay.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme static {
+  /* Colores de El Patrón */
+  --color-oro: oklch(0.8 0.14 82);
+  --color-chile: oklch(0.62 0.22 25);
+  --color-error-chile: oklch(0.74 0.16 25);
+  --color-oro-ink: oklch(0.2 0.03 60);
+  --color-barro: oklch(0.215 0.016 40);
+  --color-humo: oklch(0.27 0.018 40);
+  --color-whatsapp: oklch(0.5 0.13 152);
+  --color-whatsapp-ink: oklch(0.97 0.02 150);
+  --color-anota: oklch(0.8 0.14 82);
+
+  /* Tipografía */
+  --font-sans: "Fira Sans", sans-serif;
+  --font-display: "Pirata One", serif;
+  --text-base: 16px;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 29px;
+  --text-4xl: 36px;
+  --text-5xl: 44px;
+  --text-6xl: 54px;
+  --text-7xl: 66px;
+  --text-8xl: 81px;
+  --text-9xl: 99px;
+  --text-xs--line-height: calc(18 / 12);
+  --text-sm--line-height: calc(20 / 14);
+  --text-base--line-height: calc(24 / 16);
+  --text-lg--line-height: calc(26 / 18);
+  --text-xl--line-height: calc(28 / 20);
+  --text-2xl--line-height: calc(30 / 24);
+  --text-2xl--letter-spacing: -0.01em;
+  --text-3xl--line-height: calc(34 / 29);
+  --text-3xl--letter-spacing: -0.01em;
+  --text-4xl--line-height: calc(40 / 36);
+  --text-4xl--letter-spacing: -0.02em;
+  --text-5xl--line-height: calc(46 / 44);
+  --text-5xl--letter-spacing: -0.02em;
+  --text-6xl--line-height: calc(54 / 54);
+  --text-6xl--letter-spacing: -0.02em;
+  --text-7xl--line-height: calc(66 / 66);
+  --text-7xl--letter-spacing: -0.02em;
+  --text-8xl--line-height: calc(80 / 81);
+  --text-8xl--letter-spacing: -0.02em;
+  --text-9xl--line-height: calc(98 / 99);
+  --text-9xl--letter-spacing: -0.02em;
+
+  /* Forma y espacio */
+  --spacing: 4px;
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 5px;
+  --radius-lg: 6px;
+  --radius-xl: 9px;
+  --radius-2xl: 12px;
+  --radius-3xl: 18px;
+  --radius-4xl: 24px;
+  --default-transition-duration: 240ms;
+  --default-transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  --color-neutral-1: oklch(0.17 0.012 40);
+  --color-neutral-2: oklch(0.1814 0.0129 40.68);
+  --color-neutral-3: oklch(0.2042 0.0147 42.02);
+  --color-neutral-4: oklch(0.246 0.0178 44.5);
+  --color-neutral-5: oklch(0.3068 0.0217 48.1);
+  --color-neutral-6: oklch(0.4208 0.0273 54.85);
+  --color-neutral-7: oklch(0.5956 0.0316 65.2);
+  --color-neutral-8: oklch(0.6716 0.0318 69.7);
+  --color-neutral-9: oklch(0.7628 0.0307 75.1);
+  --color-neutral-10: oklch(0.93 0.025 85);
+  --color-success: oklch(0.52 0.1635 145);
+  --color-success-foreground: oklch(1 0 none);
+  --color-warning: oklch(0.78 0.1645 75);
+  --color-warning-foreground: oklch(0 0 none);
+  --color-error: oklch(0.52 0.2 25);
+  --color-error-foreground: oklch(1 0 none);
+}
+
+/* Roles de shadcn/ui (botones, inputs, tarjetas, diálogos) */
+:root {
+  --background: oklch(0.17 0.012 40);
+  --foreground: oklch(0.93 0.025 85);
+  --primary: oklch(0.52 0.2 25);
+  --primary-foreground: oklch(1 0 none);
+  --card: oklch(0.17 0.012 40);
+  --card-foreground: oklch(0.93 0.025 85);
+  --popover: oklch(0.17 0.012 40);
+  --popover-foreground: oklch(0.93 0.025 85);
+  --secondary: oklch(0.93 0.025 85 / 0.06);
+  --secondary-foreground: oklch(0.93 0.025 85);
+  --muted: oklch(0.93 0.025 85 / 0.06);
+  --muted-foreground: oklch(0.93 0.025 85);
+  --accent: oklch(0.93 0.025 85 / 0.08);
+  --accent-foreground: oklch(0.93 0.025 85);
+  --destructive: oklch(0.52 0.2 25);
+  --destructive-foreground: oklch(1 0 none);
+  --border: oklch(0.93 0.025 85 / 0.1);
+  --input: oklch(0.93 0.025 85 / 0.15);
+  --ring: oklch(0.52 0.2 25);
+  --sidebar: oklch(0.1814 0.0129 40.68);
+  --sidebar-foreground: oklch(0.93 0.025 85);
+  --sidebar-primary: oklch(0.52 0.2 25);
+  --sidebar-primary-foreground: oklch(1 0 none);
+  --sidebar-accent: oklch(0.93 0.025 85 / 0.08);
+  --sidebar-accent-foreground: oklch(0.93 0.025 85);
+  --sidebar-border: oklch(0.93 0.025 85 / 0.1);
+  --sidebar-ring: oklch(0.52 0.2 25);
+  --chart-1: oklch(0.52 0.2 25);
+  --chart-2: oklch(0.52 0.1072 97);
+  --chart-3: oklch(0.52 0.1041 169);
+  --chart-4: oklch(0.52 0.1212 241);
+  --chart-5: oklch(0.52 0.2 313);
+  --radius: 6px;
+  --input-fill: transparent;
+  --link: oklch(0.7753 0.1317 25);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans text-base font-normal;
+  }
+}

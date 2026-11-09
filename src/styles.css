@@ -1,0 +1,22 @@
+@keyframes pp-sway {
+  0%, 100% { transform: rotate(-3deg) skewX(-1deg); }
+  50% { transform: rotate(3deg) skewX(1deg); }
+}
+.pp-flag { transform-origin: 50% 0; animation: pp-sway 4.2s ease-in-out infinite; }
+
+@keyframes ember-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translateY(-260px) translateX(var(--drift)) scale(0.3); opacity: 0; }
+}
+.ember { position: absolute; bottom: -8px; border-radius: 999px; background: var(--color-oro); box-shadow: 0 0 10px var(--color-oro); animation: ember-rise var(--dur) linear infinite; }
+
+.hatch {
+  background-color: var(--color-humo);
+  background-image: repeating-linear-gradient(135deg, oklch(0.93 0.025 85 / 0.06) 0 2px, transparent 2px 14px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pp-flag, .ember { animation: none; }
+}
+html { scroll-behavior: smooth; }
