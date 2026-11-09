@@ -475,4 +475,5 @@ function Checkout({ cart, setQty, clear }) {
       </Dialog>
     </section>
   );
+
 }
