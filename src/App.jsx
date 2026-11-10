@@ -277,7 +277,7 @@ function Contact() {
                 poster="/video-poster.jpg" 
                 className="h-full w-full object-cover"
               >
-                <source src="/video-patron.mp4" type="video/mp4" />
+                <source src="video.mp4" type="video/mp4" />
                 Tu navegador no soporta la reproducción de video.
               </video>
             </div>
