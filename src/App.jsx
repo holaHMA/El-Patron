@@ -312,13 +312,6 @@ function Checkout({ cart, setQty, clear }) {
   };
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  // Helper para codificar los datos en formato URL form encoded para Netlify
-  const encode = (data) => {
-    return Object.keys(data)
-      .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-      .join("&");
-  };
-
   return (
     <section id="pedido" className="scroll-mt-16 border-t border-foreground/10 bg-barro/40">
       <div className="mx-auto max-w-6xl px-6 py-24">
@@ -350,21 +343,22 @@ function Checkout({ cart, setQty, clear }) {
 
             setSent(mensajeWA);
 
-            // 2. Envío directo a Netlify Forms
-            fetch("/", {
+            // 2. Construcción correcta de parametros para Netlify Forms
+            const formData = new URLSearchParams();
+            formData.append("form-name", "pedidos-el-patron");
+            formData.append("nombre", form.nombre);
+            formData.append("direccion", form.direccion);
+            formData.append("telefono", form.telefono);
+            formData.append("metodo_pago", pago);
+            formData.append("pedido_resumen", lines.map((l) => `${l.q}x ${l.name}`).join(", "));
+            formData.append("total_pagar", money(total));
+
+            fetch("/forms.html", {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: encode({
-                "form-name": "pedidos-el-patron",
-                nombre: form.nombre,
-                direccion: form.direccion,
-                telefono: form.telefono,
-                metodo_pago: pago,
-                pedido_resumen: lines.map((l) => `${l.q}x ${l.name}`).join(", "),
-                total_pagar: money(total),
-              }),
+              body: formData.toString(),
             })
-              .then(() => toast.success("Pedido guardado en Netlify"))
+              .then(() => toast.success("Pedido registrado en Netlify"))
               .catch((error) => console.error("Error al enviar a Netlify:", error));
           }}
           className="mt-12 grid gap-12 @5xl:grid-cols-[1.3fr_1fr] @5xl:items-start"
