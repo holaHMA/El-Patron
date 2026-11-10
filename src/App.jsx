@@ -7,9 +7,9 @@
   Layout: navbar fija → hero con papel picado + nombre gigante → sazón → menú en tarjetas por categoría → contacto + video grande → carrito + formulario.
   Signature: papel picado recortado meciéndose sobre "El Patrón"; brasas subiendo en el contenedor de video.
 */
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import "./styles.css";
-import { ShoppingBag, Flame, Wheat, Soup, Plus, Minus, Trash2, Instagram, Facebook, Music2, MessageCircle, Play, Clock, MapPin, Check } from "lucide-react";
+import { ShoppingBag, Flame, Wheat, Soup, Plus, Minus, Trash2, Instagram, Facebook, Music2, MessageCircle, Clock, MapPin, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
@@ -23,9 +23,8 @@ import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
 import PapelPicado from "./parts/PapelPicado";
-import Zone, { AnnotCtx, ImgSlot, ScreenTag } from "./parts/Zone";
+import Zone, { AnnotCtx, ScreenTag } from "./parts/Zone";
 import { categories, allItems, SHIPPING, money } from "./data";
 
 const NAV = [
@@ -35,7 +34,7 @@ const NAV = [
   { id: "pedido", label: "Tu pedido" },
 ];
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-const WA = "+52 55 1234 5678";
+const WA = "+52 5665899424";
 
 export default function App() {
   const [annot, setAnnot] = useState(true);
@@ -135,8 +134,10 @@ function Hero() {
             </div>
           </div>
           <img
-          src="tacos.avif"
-          alt= "orden de tacos al pastor en el comal" className="aspect-[4/3] w-full" />
+            src="tacos.avif"
+            alt="orden de tacos al pastor en el comal" 
+            className="aspect-[4/3] w-full object-cover rounded-lg" 
+          />
         </Zone>
 
         <Zone label="Presentación del sazón" className="mt-24 grid gap-8 rounded-lg bg-barro p-8 @3xl:grid-cols-[1fr_2fr] @3xl:p-12">
@@ -228,24 +229,7 @@ const SOCIAL = [
   { name: "TikTok", icon: Music2, handle: "@elpatron.mx" },
 ];
 
-function Embers() {
-  const embers = useMemo(
-    () => Array.from({ length: 22 }, (_, i) => ({
-      left: `${(i * 37) % 100}%`, size: 2 + (i % 4), dur: `${5 + (i % 6)}s`, delay: `${-(i * 0.7)}s`, drift: `${((i % 5) - 2) * 18}px`,
-    })),
-    []
-  );
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      {embers.map((e, i) => (
-        <span key={i} className="ember" style={{ left: e.left, width: e.size, height: e.size, "--dur": e.dur, "--drift": e.drift, animationDelay: e.delay }} />
-      ))}
-    </div>
-  );
-}
-
 function Contact() {
-  const [playing, setPlaying] = useState(false);
   return (
     <section id="contacto" className="scroll-mt-16 border-t border-foreground/10">
       <div className="mx-auto max-w-6xl px-6 py-24">
@@ -287,29 +271,15 @@ function Contact() {
           </Zone>
 
           <Zone label="Video incrustado · 16:9" className="flex flex-col">
-            <div className="relative aspect-video overflow-hidden rounded-lg bg-[oklch(0.12_0.012_40)] ring-1 ring-oro/30">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_110%,oklch(0.52_0.2_25/0.45),transparent_65%)]" />
-              <Embers />
-              <span className="absolute top-4 left-4 rounded-sm bg-primary px-2 text-sm font-semibold tracking-wider text-primary-foreground uppercase">
-                {"<video>"} embebido
-              </span>
-              <button
-                type="button"
-                onClick={() => setPlaying((p) => !p)}
-                aria-label={playing ? "Pausar video" : "Reproducir video"}
-                className="absolute top-1/2 left-1/2 flex size-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-oro bg-background/40 text-oro backdrop-blur transition hover:scale-105"
+            <div className="relative aspect-video overflow-hidden rounded-lg bg-background ring-1 ring-oro/30">
+              <video 
+                controls 
+                poster="/video-poster.jpg" 
+                className="h-full w-full object-cover"
               >
-                {playing ? <span className="flex gap-2"><span className="h-8 w-2 bg-oro" /><span className="h-8 w-2 bg-oro" /></span> : <Play className="size-10 translate-x-0.5 fill-current" />}
-              </button>
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/90 to-transparent p-4">
-                <div className="h-1 rounded-full bg-foreground/20">
-                  <div className={cn("h-1 rounded-full bg-oro transition-all duration-[8000ms] ease-linear", playing ? "w-full" : "w-[12%]")} />
-                </div>
-                <div className="mt-2 flex justify-between text-sm text-foreground tabular-nums">
-                  <span>{playing ? "reproduciendo" : "0:18"}</span>
-                  <span>2:45</span>
-                </div>
-              </div>
+                <source src="/video-patron.mp4" type="video/mp4" />
+                Tu navegador no soporta la reproducción de video.
+              </video>
             </div>
             <h3 className="mt-6 font-display text-4xl leading-none text-oro">Del nixtamal al comal</h3>
             <p className="mt-2 text-foreground/75">El proceso artesanal de la casa: masa, salsas de molcajete y el trompo al pastor.</p>
@@ -342,29 +312,53 @@ function Checkout({ cart, setQty, clear }) {
   };
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const confirm = () => {
-    setTried(true);
-    if (!lines.length) return toast.error("Tu pedido está vacío. Agrega algo del menú.");
-    if (Object.values(errors).some(Boolean)) return;
-    const msg = [
-      `¡Hola El Patrón! Quiero ordenar:`,
-      ...lines.map((l) => `• ${l.q} × ${l.name} (${money(l.price * l.q)})`),
-      `Envío: ${money(SHIPPING)}`,
-      `Total: ${money(total)}`,
-      `Pago: ${PAY.find((p) => p.v === pago).label}`,
-      `Nombre: ${form.nombre}`,
-      `Dirección: ${form.direccion}`,
-      `Tel: ${form.telefono}`,
-    ].join("\n");
-    setSent(msg);
-  };
-
   return (
     <section id="pedido" className="scroll-mt-16 border-t border-foreground/10 bg-barro/40">
       <div className="mx-auto max-w-6xl px-6 py-24">
         <ScreenTag n={4} name="Carrito y checkout" />
         <h2 className="font-display text-7xl leading-none">Tu Pedido</h2>
-        <div className="mt-12 grid gap-12 @5xl:grid-cols-[1.3fr_1fr] @5xl:items-start">
+
+        {/* Formulario conectado a Netlify Forms */}
+        <form 
+          name="pedidos-el-patron" 
+          method="POST" 
+          data-netlify="true"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setTried(true);
+            if (!lines.length) return toast.error("Tu pedido está vacío. Agrega algo del menú.");
+            if (Object.values(errors).some(Boolean)) return;
+            
+            // 1. Crear el mensaje formateado para WhatsApp
+            const mensajeWA = [
+              `¡Hola El Patrón! Quiero ordenar:`,
+              ...lines.map((l) => `• ${l.q} × ${l.name} (${money(l.price * l.q)})`),
+              `Envío: ${money(SHIPPING)}`,
+              `Total: ${money(total)}`,
+              `Pago: ${PAY.find((p) => p.v === pago)?.label || pago}`,
+              `Nombre: ${form.nombre}`,
+              `Dirección: ${form.direccion}`,
+              `Tel: ${form.telefono}`,
+            ].join("\n");
+
+            setSent(mensajeWA);
+
+            // 2. Enviar los datos asíncronos a Netlify Forms
+            const formData = new FormData(e.target);
+            formData.append("pedido_resumen", lines.map((l) => `${l.q}x ${l.name}`).join(", "));
+            formData.append("total_pagar", money(total));
+
+            fetch("/", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: new URLSearchParams(formData).toString(),
+            }).catch((error) => console.error("Error al enviar a Netlify:", error));
+          }}
+          className="mt-12 grid gap-12 @5xl:grid-cols-[1.3fr_1fr] @5xl:items-start"
+        >
+          {/* Campo oculto identificador para Netlify */}
+          <input type="hidden" name="form-name" value="pedidos-el-patron" />
+
           <Zone label="Resumen del carrito" className="rounded-lg border border-foreground/10 bg-barro p-6">
             {lines.length ? (
               <>
@@ -386,14 +380,14 @@ function Checkout({ cart, setQty, clear }) {
                         </TableCell>
                         <TableCell>
                           <div className="flex items-center justify-center gap-2">
-                            <Button size="icon" variant="outline" className="size-8" onClick={() => setQty(l.id, l.q - 1)} aria-label={`Quitar uno de ${l.name}`}><Minus /></Button>
+                            <Button type="button" size="icon" variant="outline" className="size-8" onClick={() => setQty(l.id, l.q - 1)} aria-label={`Quitar uno de ${l.name}`}><Minus /></Button>
                             <span className="w-6 text-center tabular-nums">{l.q}</span>
-                            <Button size="icon" variant="outline" className="size-8" onClick={() => setQty(l.id, l.q + 1)} aria-label={`Agregar uno de ${l.name}`}><Plus /></Button>
+                            <Button type="button" size="icon" variant="outline" className="size-8" onClick={() => setQty(l.id, l.q + 1)} aria-label={`Agregar uno de ${l.name}`}><Plus /></Button>
                           </div>
                         </TableCell>
                         <TableCell className="text-right font-semibold tabular-nums">{money(l.price * l.q)}</TableCell>
                         <TableCell>
-                          <Button size="icon" variant="ghost" className="size-8" onClick={() => setQty(l.id, 0)} aria-label={`Eliminar ${l.name}`}><Trash2 /></Button>
+                          <Button type="button" size="icon" variant="ghost" className="size-8" onClick={() => setQty(l.id, 0)} aria-label={`Eliminar ${l.name}`}><Trash2 /></Button>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -412,7 +406,7 @@ function Checkout({ cart, setQty, clear }) {
               <div className="flex flex-col items-center gap-4 py-12 text-center">
                 <ShoppingBag className="size-10 text-muted-foreground" />
                 <p className="text-lg">Tu pedido está vacío.</p>
-                <Button variant="outline" onClick={() => go("menu")}>Ir al menú</Button>
+                <Button type="button" variant="outline" onClick={() => go("menu")}>Ir al menú</Button>
               </div>
             )}
           </Zone>
@@ -421,24 +415,25 @@ function Checkout({ cart, setQty, clear }) {
             <FieldGroup>
               <Field data-invalid={tried && !!errors.nombre || undefined}>
                 <FieldLabel htmlFor="nombre">Nombre</FieldLabel>
-                <Input id="nombre" placeholder="¿Cómo te llamas?" value={form.nombre} onChange={set("nombre")} aria-invalid={tried && !!errors.nombre} />
+                <Input id="nombre" name="nombre" placeholder="¿Cómo te llamas?" value={form.nombre} onChange={set("nombre")} aria-invalid={tried && !!errors.nombre} />
                 {tried && errors.nombre && <FieldError className="text-error-chile">{errors.nombre}</FieldError>}
               </Field>
               <Field data-invalid={tried && !!errors.direccion || undefined}>
                 <FieldLabel htmlFor="direccion">Dirección de entrega</FieldLabel>
-                <Textarea id="direccion" rows={2} placeholder="Calle, número, colonia y referencias" value={form.direccion} onChange={set("direccion")} aria-invalid={tried && !!errors.direccion} />
+                <Textarea id="direccion" name="direccion" rows={2} placeholder="Calle, número, colonia y referencias" value={form.direccion} onChange={set("direccion")} aria-invalid={tried && !!errors.direccion} />
                 {tried && errors.direccion && <FieldError className="text-error-chile">{errors.direccion}</FieldError>}
               </Field>
               <Field data-invalid={tried && !!errors.telefono || undefined}>
                 <FieldLabel htmlFor="telefono">Teléfono</FieldLabel>
                 <InputGroup>
                   <InputGroupAddon><InputGroupText>+52</InputGroupText></InputGroupAddon>
-                  <InputGroupInput id="telefono" inputMode="numeric" placeholder="55 0000 0000" value={form.telefono} onChange={set("telefono")} onKeyDown={(e) => e.key === "Enter" && confirm()} aria-invalid={tried && !!errors.telefono} />
+                  <InputGroupInput id="telefono" name="telefono" inputMode="numeric" placeholder="55 0000 0000" value={form.telefono} onChange={set("telefono")} aria-invalid={tried && !!errors.telefono} />
                 </InputGroup>
                 {tried && errors.telefono && <FieldError className="text-error-chile">{errors.telefono}</FieldError>}
               </Field>
               <Field>
                 <FieldLabel>Método de pago</FieldLabel>
+                <input type="hidden" name="metodo_pago" value={pago} />
                 <ToggleGroup type="single" variant="outline" value={pago} onValueChange={(v) => v && setPago(v)} className="w-full flex-wrap">
                   {PAY.map((p) => (
                     <ToggleGroupItem key={p.v} value={p.v} className="flex-1 data-[state=on]:bg-oro data-[state=on]:text-oro-ink">
@@ -448,32 +443,41 @@ function Checkout({ cart, setQty, clear }) {
                 </ToggleGroup>
               </Field>
             </FieldGroup>
+            
             <button
-              type="button"
-              onClick={confirm}
+              type="submit"
               className="mt-8 flex w-full items-center justify-center gap-3 rounded-lg bg-whatsapp px-6 py-4 text-lg font-semibold text-whatsapp-ink shadow-[0_8px_30px_-8px_var(--color-whatsapp)] transition hover:brightness-110 active:scale-[0.99]"
             >
               <MessageCircle className="size-6" /> Confirmar Pedido por WhatsApp
             </button>
             <p className="mt-3 text-center text-sm text-muted-foreground">Te llega el resumen listo para enviar al {WA}</p>
           </Zone>
-        </div>
+        </form>
       </div>
 
       <Dialog open={!!sent} onOpenChange={(o) => !o && setSent(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="font-display text-4xl text-oro">¡Pedido listo!</DialogTitle>
-            <DialogDescription>Así se enviaría el mensaje por WhatsApp a El Patrón.</DialogDescription>
+            <DialogDescription>El pedido fue guardado en la base de datos y se enviará por WhatsApp a El Patrón.</DialogDescription>
           </DialogHeader>
           <pre className="rounded-lg bg-whatsapp/15 p-4 font-sans text-base whitespace-pre-wrap text-foreground">{sent}</pre>
           <DialogFooter>
             <Button variant="outline" onClick={() => setSent(null)}>Editar</Button>
-            <Button onClick={() => { setSent(null); clear(); toast.success("Pedido enviado. ¡Provecho!"); }}>Enviar</Button>
+            <Button 
+              onClick={() => {
+                const urlWA = `https://wa.me/525665899424?text=${encodeURIComponent(sent)}`;
+                window.open(urlWA, "_blank");
+                setSent(null);
+                clear();
+                toast.success("Pedido enviado. ¡Provecho!");
+              }}
+            >
+              Enviar por WhatsApp
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </section>
   );
-
 }
