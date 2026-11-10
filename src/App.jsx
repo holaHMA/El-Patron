@@ -312,13 +312,20 @@ function Checkout({ cart, setQty, clear }) {
   };
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  // Helper para codificar los datos en formato URL form encoded para Netlify
+  const encode = (data) => {
+    return Object.keys(data)
+      .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
+
   return (
     <section id="pedido" className="scroll-mt-16 border-t border-foreground/10 bg-barro/40">
       <div className="mx-auto max-w-6xl px-6 py-24">
         <ScreenTag n={4} name="Carrito y checkout" />
         <h2 className="font-display text-7xl leading-none">Tu Pedido</h2>
 
-        {/* Formulario conectado a Netlify Forms */}
+        {/* Formulario HTML con datos de Netlify */}
         <form 
           name="pedidos-el-patron" 
           method="POST" 
@@ -329,7 +336,7 @@ function Checkout({ cart, setQty, clear }) {
             if (!lines.length) return toast.error("Tu pedido está vacío. Agrega algo del menú.");
             if (Object.values(errors).some(Boolean)) return;
             
-            // 1. Crear el mensaje formateado para WhatsApp
+            // 1. Mensaje de WhatsApp
             const mensajeWA = [
               `¡Hola El Patrón! Quiero ordenar:`,
               ...lines.map((l) => `• ${l.q} × ${l.name} (${money(l.price * l.q)})`),
@@ -343,20 +350,25 @@ function Checkout({ cart, setQty, clear }) {
 
             setSent(mensajeWA);
 
-            // 2. Enviar los datos asíncronos a Netlify Forms
-            const formData = new FormData(e.target);
-            formData.append("pedido_resumen", lines.map((l) => `${l.q}x ${l.name}`).join(", "));
-            formData.append("total_pagar", money(total));
-
+            // 2. Envío directo a Netlify Forms
             fetch("/", {
               method: "POST",
               headers: { "Content-Type": "application/x-www-form-urlencoded" },
-              body: new URLSearchParams(formData).toString(),
-            }).catch((error) => console.error("Error al enviar a Netlify:", error));
+              body: encode({
+                "form-name": "pedidos-el-patron",
+                nombre: form.nombre,
+                direccion: form.direccion,
+                telefono: form.telefono,
+                metodo_pago: pago,
+                pedido_resumen: lines.map((l) => `${l.q}x ${l.name}`).join(", "),
+                total_pagar: money(total),
+              }),
+            })
+              .then(() => toast.success("Pedido guardado en Netlify"))
+              .catch((error) => console.error("Error al enviar a Netlify:", error));
           }}
           className="mt-12 grid gap-12 @5xl:grid-cols-[1.3fr_1fr] @5xl:items-start"
         >
-          {/* Campo oculto identificador para Netlify */}
           <input type="hidden" name="form-name" value="pedidos-el-patron" />
 
           <Zone label="Resumen del carrito" className="rounded-lg border border-foreground/10 bg-barro p-6">
@@ -459,7 +471,7 @@ function Checkout({ cart, setQty, clear }) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="font-display text-4xl text-oro">¡Pedido listo!</DialogTitle>
-            <DialogDescription>El pedido fue guardado en la base de datos y se enviará por WhatsApp a El Patrón.</DialogDescription>
+            <DialogDescription>El pedido fue guardado en Netlify y se enviará por WhatsApp a El Patrón.</DialogDescription>
           </DialogHeader>
           <pre className="rounded-lg bg-whatsapp/15 p-4 font-sans text-base whitespace-pre-wrap text-foreground">{sent}</pre>
           <DialogFooter>

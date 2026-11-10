@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Formularios de Netlify</title>
+</head>
+<body>
+  <!-- Formulario invisible para que el bot de Netlify registre los campos en el panel -->
+  <form name="pedidos-el-patron" netlify netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="pedidos-el-patron" />
+    <input type="text" name="nombre" />
+    <textarea name="direccion"></textarea>
+    <input type="text" name="telefono" />
+    <input type="text" name="metodo_pago" />
+    <input type="text" name="pedido_resumen" />
+    <input type="text" name="total_pagar" />
+  </form>
+</body>
+</html>
